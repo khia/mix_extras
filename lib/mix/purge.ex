@@ -11,7 +11,7 @@ defmodule Mix.Tasks.Purge do
   the repositories, unless --unlock is given.
   """
 
-  import Mix.Deps, only: [all: 0, by_name!: 1, format_dep: 1, deps_path: 1]
+  import Mix.Deps, only: [all: 0, by_name!: 1, format_dep: 1]
 
   def run(args) do
     case OptionParser.parse(args, flags: [:unlock]) do
@@ -35,5 +35,9 @@ defmodule Mix.Tasks.Purge do
     if opts[:unlock] do
       Mix.Task.run "deps.unlock", apps
     end
+  end
+
+  defp deps_path(Mix.Dep[app: app]) do
+    File.join(Mix.project[:deps_path], app)
   end
 end
