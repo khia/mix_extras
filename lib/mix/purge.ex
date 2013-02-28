@@ -27,7 +27,7 @@ defmodule Mix.Tasks.Purge do
       purge = opts[:purge]
       if purge == nil or purge do
         shell.info "* Purging #{format_dep(dep)}"
-        File.rm_rf Path.join(deps_path(dep), "ebin")
+        clean_ebin(deps_path(dep))
         dep.app
       end
     end
@@ -43,5 +43,14 @@ defmodule Mix.Tasks.Purge do
     else
       opts[:path]
     end
+  end
+
+  defp clean_ebin(path) do
+    files =  Path.wildcard(Path.join(path, "ebin/*"))
+    files |> filter |> Enum.map File.rm(&1)
+  end
+
+  def filter(files) do
+    Enum.filter(files, fn(x) -> String.first(Path.basename(x)) != "." end)
   end
 end
