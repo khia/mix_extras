@@ -37,7 +37,11 @@ defmodule Mix.Tasks.Purge do
     end
   end
 
-  defp deps_path(Mix.Dep[app: app]) do
-    Path.join(Mix.project[:deps_path], app)
+  defp deps_path(Mix.Dep[app: app, opts: opts]) do
+    if nil?(opts[:path]) do
+      Path.join(Mix.project[:deps_path], app)
+    else
+      opts[:path]
+    end
   end
 end
