@@ -14,7 +14,7 @@ defmodule Mix.Tasks.Purge do
   import Mix.Deps, only: [all: 0, by_name!: 1, format_dep: 1]
 
   def run(args) do
-    case OptionParser.parse(args, flags: [:unlock]) do
+    case OptionParser.parse(args, switches: [:unlock]) do
       { opts, [] }   -> do_clean all, opts
       { opts, args } -> do_clean by_name!(args), opts
     end
@@ -23,11 +23,11 @@ defmodule Mix.Tasks.Purge do
   defp do_clean(deps, opts) do
     shell = Mix.shell
 
-    apps = Enum.map deps, fn(Mix.Dep[opts: opts] = dep) ->   
+    apps = Enum.map deps, fn(Mix.Dep[opts: opts] = dep) ->
       purge = opts[:purge]
       if purge == nil or purge do
         shell.info "* Purging #{format_dep(dep)}"
-        File.rm_rf File.join(deps_path(dep), "ebin")
+        File.rm_rf Path.join(deps_path(dep), "ebin")
         dep.app
       end
     end
@@ -38,6 +38,6 @@ defmodule Mix.Tasks.Purge do
   end
 
   defp deps_path(Mix.Dep[app: app]) do
-    File.join(Mix.project[:deps_path], app)
+    Path.join(Mix.project[:deps_path], app)
   end
 end
