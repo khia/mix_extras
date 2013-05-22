@@ -11,12 +11,12 @@ defmodule Mix.Tasks.Purge do
   the repositories, unless --unlock is given.
   """
 
-  import Mix.Deps, only: [all: 0, by_name!: 1, format_dep: 1]
+  import Mix.Deps, only: [all: 0, by_name: 1, format_dep: 1]
 
   def run(args) do
     case OptionParser.parse(args, switches: [:unlock]) do
       { opts, [] }   -> do_clean all, opts
-      { opts, args } -> do_clean by_name!(args), opts
+      { opts, args } -> do_clean by_name(args), opts
     end
   end
 

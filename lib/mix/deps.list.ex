@@ -10,12 +10,12 @@ defmodule Mix.Tasks.Deps.List do
   be given to output info about specific one.
   """
 
-  import Mix.Deps, only: [all: 0, by_name!: 1, format_dep: 1]
+  import Mix.Deps, only: [all: 0, by_name: 1, format_dep: 1]
 
   def run(args) do
     case OptionParser.parse(args, switches: []) do
       { opts, [] } -> print(all, opts)
-      { opts, rest } -> print(by_name!(rest), opts)
+      { opts, rest } -> print(by_name(rest), opts)
     end
   end
 
